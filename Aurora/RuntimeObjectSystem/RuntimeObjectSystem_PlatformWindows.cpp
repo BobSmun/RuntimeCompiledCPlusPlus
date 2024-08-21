@@ -15,6 +15,8 @@
 //    misrepresented as being the original software.
 // 3. This notice may not be removed or altered from any source distribution.
 
+#ifdef _WIN32
+
 #include "RuntimeProtector.h"
 #include "RuntimeObjectSystem.h"
 
@@ -42,7 +44,7 @@ struct RuntimeObjectSystem::PlatformImpl
 
 	PlatformImpl()
 		: s_exceptionState( ES_PASS )
-	{
+    {
 	}
 
 	int RuntimeExceptionFilter()
@@ -163,11 +165,15 @@ bool RuntimeObjectSystem::TryProtectedFunction( RuntimeProtector* pProtectedObje
 	{
         if( !pProtectedObject_->m_bHashadException )
         {
+			// Clang on Windows error : cannot compile this 'this' captured by SEH yet
+			// So we make a copy of this.
+			// https://github.com/RuntimeCompiledCPlusPlus/RuntimeCompiledCPlusPlus/pull/112
+	        RuntimeObjectSystem* thisCopy = this; 
 	        __try
             {
 		        pProtectedObject_->ProtectedFunc();
 	        }
-            __except( m_pImpl->SimpleExceptionFilter( GetExceptionInformation(), pProtectedObject_ ) )
+            __except( thisCopy->m_pImpl->SimpleExceptionFilter( GetExceptionInformation(), pProtectedObject_ ) )
 	        {
 		        // If we hit any structured exception, exceptionInfo will be initialized
 		        // If it's one we recognise and we hinted for no debugging, we'll go straight here, with info filled out
@@ -195,3 +201,5 @@ bool RuntimeObjectSystem::TestBuildWaitAndUpdate()
     }
     return true;
 }
+
+#endif // #ifdef _WIN32

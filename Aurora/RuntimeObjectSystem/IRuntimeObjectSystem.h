@@ -43,6 +43,8 @@ enum TestBuildResult
 
 struct ITestBuildNotifier
 {
+    virtual ~ITestBuildNotifier() {}
+
     // Notifier gets name of file which and result type.
     // Errors will also be output to log in 'standard' RCC++ way.
     // file may be NULL if type TESTBUILDFAILTYPE_NO_FILES_TO_BUILD.
@@ -82,6 +84,7 @@ struct IRuntimeObjectSystem : public ITestBuildNotifier
 
 	virtual IObjectFactorySystem* GetObjectFactorySystem() const = 0;
 	virtual IFileChangeNotifier* GetFileChangeNotifier() const = 0;
+    virtual ICompilerLogger*     GetLogger() const = 0;
 
 	virtual void CompileAll( bool bForceRecompile ) = 0;
 
@@ -133,8 +136,8 @@ struct IRuntimeObjectSystem : public ITestBuildNotifier
     // returns the number of errors - 0 if all passed.
     virtual int TestBuildAllRuntimeHeaders(     ITestBuildNotifier* callback, bool bTestFileTracking ) = 0;
 
-    // FindFile - attempts to find the file in a source directory
-    virtual FileSystemUtils::Path   FindFile( const FileSystemUtils::Path& input ) = 0;
+    // FindFile - attempts to find the file in a source directory, if pFound not NULL returns if file found
+    virtual FileSystemUtils::Path   FindFile( const FileSystemUtils::Path& input, bool* pFound = NULL ) = 0;
 
     // AddPathToSourceSearch - adds a path to help source search. Can be called multiple times to add paths.
     virtual void AddPathToSourceSearch( const char* path ) = 0;
