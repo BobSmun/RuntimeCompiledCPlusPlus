@@ -15,6 +15,8 @@
 //    misrepresented as being the original software.
 // 3. This notice may not be removed or altered from any source distribution.
 
+#ifndef _WIN32
+
 #include "RuntimeObjectSystem.h"
 #include "RuntimeProtector.h"
 
@@ -66,7 +68,7 @@ void RuntimeObjectSystem::SetProtectionEnabled( bool bProtectionEnabled_ )
     {
         if( ms_bMachPortSet )
         {
-            for( int i = 0; i < old_count; ++i )
+            for( int i = 0; i < static_cast<int>(old_count); ++i )
             {
                 task_set_exception_ports( mach_task_self(), old_masks[i], old_ports[i], old_behaviors[i], old_flavors[i]);
             }
@@ -86,6 +88,7 @@ void signalHandler(int sig, siginfo_t *info, void *context)
 void signalHandler(int sig)
 #endif
 {
+    (void) context;
     // we only handle synchronous signals with this handler, so they come to the correct thread.
     assert( m_pCurrProtector );
     
@@ -195,3 +198,5 @@ bool RuntimeObjectSystem::TestBuildWaitAndUpdate()
 #endif
     return true;
 }
+
+#endif // #ifndef _WIN32

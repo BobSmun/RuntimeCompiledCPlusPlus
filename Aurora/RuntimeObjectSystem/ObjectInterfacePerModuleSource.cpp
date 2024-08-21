@@ -17,10 +17,12 @@
 
 // ObjectInterfaceOerDllSource.cpp : Defines the entry point for the DLL application.
 #include "ObjectInterfacePerModule.h"
+#include "../RuntimeCompiler/FileSystemUtils.h"
 
 PerModuleInterface* PerModuleInterface::ms_pObjectManager = NULL;
 
 SystemTable* PerModuleInterface::g_pSystemTable = 0;
+IRuntimeObjectSystem* PerModuleInterface::g_pRuntimeObjectSystem = 0;
 
 extern "C" 
 #ifdef _WIN32
@@ -66,6 +68,11 @@ void PerModuleInterface::SetSystemTable( SystemTable* pSystemTable )
 	g_pSystemTable = pSystemTable;
 }
 
+void PerModuleInterface::SetRuntimeObjectSystem( IRuntimeObjectSystem* pRuntimeObjectSystem_ )
+{
+	g_pRuntimeObjectSystem = pRuntimeObjectSystem_;
+}
+
 PerModuleInterface::PerModuleInterface()
 {
 	//ensure this file gets compiled
@@ -80,4 +87,25 @@ const std::vector<const char*>& PerModuleInterface::GetRequiredSourceFiles() con
 void PerModuleInterface::AddRequiredSourceFiles( const char* file_ )
 {
 	m_RequiredSourceFiles.push_back( file_ );
+}
+
+std::string PerModuleInterface::GetOSCanonicalCleanPath( const char* compilePath_, const char* filename_ )
+{
+	FileSystemUtils::Path path;
+	path = compilePath_;
+	path = path / filename_;
+	path = path.DelimitersToOSDefault();
+	path = path.GetCleanPath();
+	path.ToOSCanonicalCase();
+	return path.m_string;
+}
+
+std::string PerModuleInterface::GetOSCanonicalCleanPath( const char* filename_ )
+{
+	FileSystemUtils::Path path;
+	path = filename_;
+	path = path.DelimitersToOSDefault();
+	path = path.GetCleanPath();
+	path.ToOSCanonicalCase();
+	return path.m_string;
 }

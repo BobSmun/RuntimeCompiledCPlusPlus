@@ -55,14 +55,17 @@ public:
     {
         m_bFastCompileMode = bFast;
 
-        // call GetIsComplete() to ensure this stops process
-        GetIsComplete();
+        if( m_pImplData )
+        {
+            // call GetIsComplete() to ensure this stops process
+            GetIsComplete();
+        }
     }
 
     std::string GetObjectFileExtension() const;
 	void RunCompile( const std::vector<FileSystemUtils::Path>&	filesToCompile_,
                      const CompilerOptions&						compilerOptions_,
-					 std::vector<FileSystemUtils::Path>			linkLibraryList_,
+					 const std::vector<FileSystemUtils::Path>&			linkLibraryList_,
 					 const FileSystemUtils::Path&				moduleName_  );
 
 

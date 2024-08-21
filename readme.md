@@ -1,21 +1,39 @@
+Support development of Runtime Compiled C++ through [Github Sponsors](https://github.com/sponsors/dougbinks) or our [Patreon](https://www.patreon.com/enkisoftware)
+
+[<img src="https://img.shields.io/static/v1?logo=github&label=Github&message=Sponsor&color=#ea4aaa" width="200"/>](https://github.com/sponsors/dougbinks)    [<img src="https://c5.patreon.com/external/logo/become_a_patron_button@2x.png" alt="Become a Patron" width="150"/>](https://www.patreon.com/enkisoftware)
+
 # Runtime Compiled C++ sample code
 
-- Code: https://github.com/RuntimeCompiledCPlusPlus/RuntimeCompiledCPlusPlus
 - Wiki: https://github.com/RuntimeCompiledCPlusPlus/RuntimeCompiledCPlusPlus/wiki
-- Blog: http://runtimecompiledcplusplus.blogspot.com/
+- Blog: https://www.enkisoftware.com/devlog-rcc++ (Old Blog at: http://runtimecompiledcplusplus.blogspot.com/)
 - Group: http://groups.google.com/group/runtimecompiledcplusplus
+- Code: https://github.com/RuntimeCompiledCPlusPlus/RuntimeCompiledCPlusPlus
+- [Rapid Development with RCC++ Talk](https://www.youtube.com/watch?v=hYib2YIZG24)
+- [Runtime Compiled C++ Dear ImGui and DX11 Tutorial Videos](https://www.youtube.com/playlist?list=PLRp7HE6uWI1m6tu_-vNUY-N_gnXT17WHQ)
+- [GameAIPro: Runtime Compiled C++ for Rapid AI Development article](https://www.gameaipro.com/GameAIPro/GameAIPro_Chapter15_Runtime_Compiled_C++_for_Rapid_AI_Development.pdf)
+- Further examples:
+    - https://github.com/juliettef/RCCpp-DearImGui-GLFW-example (Cross platform)
+    - https://github.com/dougbinks/RCCpp_DX11_Example (Windows only)
 
-Runtime-Compiled C++ is a way to reliably make major changes to your C++ code at runtime and see the results immediately. It's aimed at games development but could be useful in any industry where turnaround times are a bottleneck.
+Runtime-Compiled C++ (RCC++) is a way to reliably make major changes to your C++ code at runtime and see the results immediately. It's aimed at games development but could be useful in any industry where turnaround times are a bottleneck.
+
+RCC++ is primarily designed to shorten iteration times in development - developers can build their project, run it, make changes during runtime and see the results almost immediately. If needed, shipping code can [disable runtime compilation](https://github.com/RuntimeCompiledCPlusPlus/RuntimeCompiledCPlusPlus/wiki/Disabling-runtime-compilation) in a number of ways. RCC++ is not intended as a method to allow end users of a shipped binary to compile modifications, though with some work it can be used this way.
+
+## Features
+
+- Cross platform, supporting MSVC on Windows, Clang and GCC or any compiler which understands GCC options on Linux and Mac OSX, and relatively easy to port to new compilers and platforms.
+- Simple in memory serialization so you can preserve object state in a safe way between compiles.
+- [Error protection](https://github.com/RuntimeCompiledCPlusPlus/RuntimeCompiledCPlusPlus/wiki/Error-protection) so that when you make a mistake during programming which would normally crash your application you can correct and recover.
+- [Undo and Redo](https://github.com/RuntimeCompiledCPlusPlus/RuntimeCompiledCPlusPlus/wiki/Undo-and-Redo-via-the-Object-Constructor-History) which allows you to quickly swap between changes at runtime, great for testing whether a subtle code change helps.
+- [Control over optimization levels](https://github.com/RuntimeCompiledCPlusPlus/RuntimeCompiledCPlusPlus/wiki/Controlling-Optimization-Levels) so you can switch one file into debug, add a break point and see the state in more clarity than when it's fully optimized.
 
 ## Supported OS / Compilers:
 
-- Windows XP+, Visual Studio 2008+. Note we currently distribute only the VS 2010 solution and projects.
-- Mac OS X 10.7+ with XCode 4.
-- Linux using Eclipse CDT (tested Ubuntu 12.04 64bit).
-- cmake (many thanks to user join_the_fun from reddit)
-- QtCreator using the cmake files. Open CMakeLists.txt in the Aurora directory. Make sure cmake is installed and on Windows the path to cmake is set in QtCreator->Tools->options->CMake
+- Linux, Windows, Mac OS X suported through cmake files (many thanks to user join_the_fun from reddit)
+- Visual Studio projects for Windows are also provided.
+- MinGW is not supported in this repository, but a port exists here: https://github.com/BobSmun/RuntimeCompiledCPlusPlus/tree/MinGWw64_Support
 
-For Visual Studio and XCode the main project file is found in the Aurora directory. All dependencies should be normally present.
+For Visual Studio the main project file is found in the Aurora directory. All dependencies should be normally present.
 
 Linux requires the following dependencies installed for the SimpleTest project (use "sudo apt-get install NAME"):
 - libfreetype6-dev
@@ -25,13 +43,11 @@ Linux requires the following dependencies installed for the SimpleTest project (
 - g++, if you're already doing C++ development you should have this
 - libglfw-dev, if using system glfw, otherwise this comes prebuilt for 64bit Linux. To use the system glfw set the option GLFW_SYSTEM to ON - cmake .. -DGLFW_SYSTEM=ON
 
-For Eclipse use File->Import->General->Existing Projects into Workspace and select the RuntimeCompiledCPlusPlus directory and import all projects it finds (best not to copy so you can keep everything up to date with git).
-
 For cmake, create a folder called build in the Aurora directory and run cmake from there followed by make: on Linux run "mkdir build && cd build && cmake .. && make" from Aurora dir.
 
 ## License (zlib)
 
-Copyright (c) 2010-2013 Matthew Jack and Doug Binks
+Copyright (c) 2010-2020 Matthew Jack and Doug Binks
 
 This software is provided 'as-is', without any express or implied
 warranty.  In no event will the authors be held liable for any damages
